@@ -63,6 +63,8 @@ public class SharedActicity extends AppCompatActivity {
         cleverRecyclerView.setScrollAnimationDuration(200);
 //        支持设置触发滚动到下一页的阀值
         cleverRecyclerView.setSlidingThreshold(0.1f);
+        cleverRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+//        cleverRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(4,StaggeredGridLayoutManager.HORIZONTAL));
         cleverRecyclerView.setAdapter(adapter);
 //        cleverRecyclerView.set
         /**
@@ -95,6 +97,7 @@ public class SharedActicity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(MyViewHolder holder, int position) {
+            holder.text.setHeight((int)(Math.random()*100));
             holder.text.setText(mDatas.get(position));
         }
 
