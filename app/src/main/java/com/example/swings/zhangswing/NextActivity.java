@@ -1,9 +1,15 @@
 package com.pdsu.zhangsings;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,18 +19,20 @@ import android.widget.Toast;
 
 public class NextActivity extends Activity implements OnClickListener {
 
-	private Handler mHandler = new Handler(){
+	private Handler mHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			// TODO Auto-generated method stub
 			super.handleMessage(msg);
-			if (msg.what==0) {
+			if (msg.what == 0) {
 				mTextView.setText("This is change Log .");
-				Toast.makeText(getApplicationContext(), "This is change Log .", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), "This is change Log .",
+						Toast.LENGTH_SHORT).show();
 			}
-			if (msg.what==1) {
+			if (msg.what == 1) {
 				mTextView.setText("This is change Log .1");
-				Toast.makeText(getApplicationContext(), "This is change Log .1", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(),
+						"This is change Log .1", Toast.LENGTH_SHORT).show();
 			}
 		}
 	};
@@ -34,9 +42,10 @@ public class NextActivity extends Activity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_next);
-		mTextView =(TextView) findViewById(R.id.tv_show);
+		mTextView = (TextView) findViewById(R.id.tv_show);
 		findViewById(R.id.btn_change_text).setOnClickListener(this);
 		findViewById(R.id.btn_change_text2).setOnClickListener(this);
+		findViewById(R.id.btn_change_text3).setOnClickListener(this);
 	}
 
 	@Override
@@ -66,10 +75,10 @@ public class NextActivity extends Activity implements OnClickListener {
 			new Thread() {
 				@Override
 				public void run() {
-					Message msg=mHandler.obtainMessage();
-					msg.what=0;
+					Message msg = mHandler.obtainMessage();
+					msg.what = 0;
 					msg.sendToTarget();
-//					mHandler.sendEmptyMessage(what)
+					// mHandler.sendEmptyMessage(what)
 				};
 			}.start();
 			break;
@@ -77,17 +86,35 @@ public class NextActivity extends Activity implements OnClickListener {
 			new Thread() {
 				@Override
 				public void run() {
-					Message msg=new Message();
-					msg.what=1;
-//					msg.sendToTarget();
+					Message msg = new Message();
+					msg.what = 1;
+					// msg.sendToTarget();
 					mHandler.sendMessage(msg);
 				};
 			}.start();
+		case R.id.btn_change_text3:
+			checkDefaultActivity(this);
 			break;
 
 		default:
 			break;
 		}
 
+	}
+
+	// 检测程序默认程序
+	public void checkDefaultActivity(Context mContext) {
+		PackageManager pm = mContext.getPackageManager();
+		Intent intent = new Intent(Intent.ACTION_VIEW);
+		intent.setData(Uri.parse("http://www.google.com"));
+		ResolveInfo info = pm.resolveActivity(intent,
+				PackageManager.MATCH_DEFAULT_ONLY);
+		Log.i("zhang", "getDefaultActivity info = " + info + ";pkgName = "
+				+ info.activityInfo.packageName);
+		Toast.makeText(
+				mContext,
+				"getDefaultActivity info = " + info + ";pkgName = "
+						+ info.activityInfo.packageName, Toast.LENGTH_SHORT)
+				.show();
 	}
 }
