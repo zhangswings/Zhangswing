@@ -1,0 +1,29 @@
+package com.pdsu;
+
+import java.util.Scanner;
+
+public class Print_min {
+public static void main(String[] args) {
+	Scanner scanner=new Scanner(System.in);
+	System.out.println("请输入秒：");
+//	String seconds=scanner.nextLine();
+	int seconds=scanner.nextInt();
+	int mins=seconds/60;
+	int hours=mins/60;
+	if(hours>0)
+		mins=mins%60;
+	int sec=seconds%60;
+	System.out.print(hours>0?hours+" 时 ":"");
+	System.out.print(mins>0?mins+" 分 ":"");
+	System.out.println(sec+" 秒");
+	
+}
+}
+/**
+1、 从键盘接受一个数字，打印该数字表示的时间，最大单位到天，例如：
+键盘输入6，打印6秒；
+键盘输入60，打印1分；
+键盘输入66，打印1分6秒；
+键盘输入666，打印11分6秒；
+键盘输入3601，打印1小时1秒
+*/
